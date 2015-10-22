@@ -19,34 +19,33 @@
 package ch.swaechter.webcms.adminplugin.controllers;
 
 import ch.swaechter.webcms.adminplugin.models.UserModel;
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.controller.Controller;
-import ch.swaechter.webcms.core.components.view.EmptyView;
-import ch.swaechter.webcms.core.components.view.ExternalRedirectView;
-import ch.swaechter.webcms.core.components.view.InternalRedirectView;
-import ch.swaechter.webcms.core.components.view.ModelView;
-import ch.swaechter.webcms.core.components.view.View;
+import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.EmptyView;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.ExternalRedirectView;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.InternalRedirectView;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.ModelView;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
 
 /**
  * This class is responsible for the user actions like the login or logout process.
  *
  * @author Simon Wächter
  */
-public class UserController extends Controller
+public class UserController implements Controller
 {
 	/**
-	 * Model that contains the user information.
+	 * User model for the user interaction.
 	 */
-	private final UserModel usermodel = new UserModel(getContainer());
+	private final UserModel usermodel;
 
 	/**
-	 * Constructor with the container.
+	 * Constructor with the user model.
 	 *
-	 * @param container Container that provides all data
+	 * @param usermodel User model for the user interaction
 	 */
-	public UserController(Container container)
+	public UserController(UserModel usermodel)
 	{
-		super(container);
+		this.usermodel = usermodel;
 	}
 
 	/**
@@ -56,9 +55,9 @@ public class UserController extends Controller
 	 */
 	public View index()
 	{
-		ModelView view = new ModelView("userindex");
-		view.addAttribute("modelname", usermodel.getModelName());
-		return view;
+		ModelView modelview = new ModelView("userindex");
+		modelview.addAttribute("modelname", usermodel.getName());
+		return modelview;
 	}
 
 	/**

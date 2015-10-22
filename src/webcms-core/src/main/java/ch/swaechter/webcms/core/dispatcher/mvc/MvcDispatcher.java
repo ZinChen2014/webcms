@@ -16,53 +16,75 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher;
+package ch.swaechter.webcms.core.dispatcher.mvc;
 
 import java.lang.reflect.Method;
 
 import ch.swaechter.webcms.core.Globals;
 import ch.swaechter.webcms.core.Util;
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.controller.Controller;
-import ch.swaechter.webcms.core.components.view.View;
+import ch.swaechter.webcms.core.dispatcher.Dispatcher;
+import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
 import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.router.Route;
+import ch.swaechter.webcms.core.settings.Settings;
 
 /**
  * This class represents a dispatcher that handles all MVC component.
  *
  * @author Simon Wächter
  */
-public class MvcDispatcher extends Dispatcher
+public class MvcDispatcher implements Dispatcher
 {
+	/**
+	 * Plugin manager who is responsible for all plugins.
+	 */
+	private final PluginManager pluginmanager;
+
+	/**
+	 * Settings of the system.
+	 */
+	private final Settings settings;
+
+	/**
+	 * Constructor with the plugin manager and the settings.
+	 *
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
+	 */
+	public MvcDispatcher(PluginManager pluginmanager, Settings settings)
+	{
+		this.pluginmanager = pluginmanager;
+		this.settings = settings;
+	}
 	/**
 	 * This method handles the given route. In case of a match the method should return true and the router
 	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
 	 */
 	@Override
-	public boolean dispatchRoute(Route route, Container container) throws Exception
+	public boolean dispatchRoute(Route route) throws Exception
 	{
-		return dispatchMvcRoute(route, container);
+		return dispatchMvcRoute(route);
 	}
 
 	/**
 	 * Handle a MVC route.
 	 *
 	 * @param route Route
-	 * @param container Container with the data
 	 * @return Status of the dispatch process
 	 * @throws Exception An exception in case of a critical system failure
 	 */
-	private boolean dispatchMvcRoute(Route route, Container container) throws Exception
+	private boolean dispatchMvcRoute(Route route) throws Exception
 	{
 		String path =  Util.trimFirstCharacters(route.getPath(), Globals.DIRECTORY_SEPARATOR);
 		String[] parameters = path.split(Globals.DIRECTORY_SEPARATOR);
 		String controllerstring = (parameters.length > 0) ? parameters[0] : new String();
 		String actionstring = (parameters.length > 1) ? parameters[1] : new String();
 		String controllername = controllerstring + Globals.CONTROLLER_CLASS_SUFFIX;
-		for(Plugin plugin : container.getPluginManager().getPlugins())
+		for(Plugin plugin : pluginmanager.getPlugins())
 		{
-			for(Controller controller : plugin.getControllers(container))
+			for(Controller controller : plugin.getControllers(pluginmanager, settings))
 			{
 				if(controller.getClass().getSimpleName().equalsIgnoreCase(controllername))
 				{
@@ -70,14 +92,14 @@ public class MvcDispatcher extends Dispatcher
 					{
 						Method method = controller.getClass().getDeclaredMethod(actionstring);
 						View view = (View) method.invoke(controller);
-						view.processRoute(plugin, route, container);
+						view.processRoute(plugin, route);
 						return true;
 					}
 					catch(Exception exception)
 					{
-						if(!route.getPath().equals(container.getSettings().getDefaultRoute()))
+						if(!route.getPath().equals(settings.getDefaultRoute()))
 						{
-							return dispatchMvcRoute(new Route(container.getSettings().getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()), container);
+							return dispatchMvcRoute(new Route(settings.getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()));
 						}
 						else
 						{
@@ -87,6 +109,6 @@ public class MvcDispatcher extends Dispatcher
 				}
 			}
 		}
-		return dispatchMvcRoute(new Route(container.getSettings().getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()), container);
+		return dispatchMvcRoute(new Route(settings.getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()));
 	}
 }

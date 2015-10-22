@@ -16,40 +16,25 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.components.view;
+package ch.swaechter.webcms.core.dispatcher.alias;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.dispatcher.Dispatcher;
 import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents a view that can redirect to an external site.
+ * This class represents a dispatcher that handles URL aliases.
  *
  * @author Simon Wächter
  */
-public class ExternalRedirectView extends View
+public class AliasDispatcher implements Dispatcher
 {
 	/**
-	 * Redirect URL of the view.
-	 */
-	private final String redirecturl;
-
-	/**
-	 * Constructor with the redirect URL.
-	 *
-	 * @param redirecturl Redirect URL.
-	 */
-	public ExternalRedirectView(String redirecturl)
-	{
-		this.redirecturl = redirecturl;
-	}
-
-	/**
-	 * Process the redirect based on the given stream.
+	 * This method handles the given route. In case of a match the method should return true and the router
+	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
 	 */
 	@Override
-	public void processRoute(Plugin plugin, Route route, Container container) throws Exception
+	public boolean dispatchRoute(Route route) throws Exception
 	{
-		route.getResponse().sendRedirect(redirecturl);
+		return false;
 	}
 }

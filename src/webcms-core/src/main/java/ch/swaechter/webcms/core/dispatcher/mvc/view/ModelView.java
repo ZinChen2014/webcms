@@ -16,13 +16,12 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.components.view;
+package ch.swaechter.webcms.core.dispatcher.mvc.view;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import ch.swaechter.webcms.core.Globals;
-import ch.swaechter.webcms.core.components.container.Container;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.router.Route;
 import freemarker.cache.ClassTemplateLoader;
@@ -42,22 +41,22 @@ import kr.pe.kwonnam.freemarker.inheritance.PutDirective;
  *
  * @author Simon Wächter
  */
-public class ModelView extends View
+public class ModelView implements View
 {
 	/**
-	 * File path to the JSP file.
+	 * File path to the model file.
 	 */
 	private final String filepath;
 
 	/**
-	 * Attributes that are passed to the JSP file.
+	 * Attributes that are passed to the model file.
 	 */
 	private HashMap<String, Object> attributes;
 
 	/**
-	 * Constructor with the file path of the JSP file.
+	 * Constructor with the file path of the model file.
 	 *
-	 * @param filepath File path of the JSP file
+	 * @param filepath File path of the model file
 	 */
 	public ModelView(String filepath)
 	{
@@ -101,7 +100,7 @@ public class ModelView extends View
 	 * Process the view and write to the given stream.
 	 */
 	@Override
-	public void processRoute(Plugin plugin, Route route, Container container) throws Exception
+	public void processRoute(Plugin plugin, Route route) throws Exception
 	{
 		// Collect the layout commands
 		Map<String, TemplateDirectiveModel> layout = new HashMap<String, TemplateDirectiveModel>();

@@ -21,10 +21,12 @@ package ch.swaechter.webcms.textplugin;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.controller.Controller;
+import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
 import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.plugin.PluginManager;
+import ch.swaechter.webcms.core.settings.Settings;
 import ch.swaechter.webcms.textplugin.controllers.TextController;
+import ch.swaechter.webcms.textplugin.models.TextModel;
 
 /**
  * This plugin serves as a simple text site plugin that is able to display texts.
@@ -55,8 +57,9 @@ public class TextPlugin implements Plugin
 	 * Get all initialized controllers.
 	 */
 	@Override
-	public ArrayList<Controller> getControllers(Container container)
+	public ArrayList<Controller> getControllers(PluginManager pluginmanager, Settings settings)
 	{
-		return new ArrayList<Controller>(Arrays.asList(new TextController(container)));
+		TextModel textmodel = new TextModel();
+		return new ArrayList<Controller>(Arrays.asList(new TextController(textmodel)));
 	}
 }

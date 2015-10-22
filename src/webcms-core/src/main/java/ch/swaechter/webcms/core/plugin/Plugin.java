@@ -20,8 +20,8 @@ package ch.swaechter.webcms.core.plugin;
 
 import java.util.ArrayList;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.controller.Controller;
+import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
+import ch.swaechter.webcms.core.settings.Settings;
 
 /**
  * This class represents a plugin that can provide additional functionality.
@@ -43,8 +43,9 @@ public interface Plugin
 	/**
 	 * Get all initialized controllers.
 	 *
-	 * @param container Container for the initialization
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
 	 * @return Initialized controllers
 	 */
-	public ArrayList<Controller> getControllers(Container container);
+	public ArrayList<Controller> getControllers(PluginManager pluginmanager, Settings settings);
 }

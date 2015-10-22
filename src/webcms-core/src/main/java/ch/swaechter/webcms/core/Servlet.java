@@ -80,8 +80,7 @@ public class Servlet extends HttpServlet
 		}
 		catch(Exception exception)
 		{
-			Route route = router.getRoute(getServletContext(), request, response);
-			router.executeFailureRoute("A critical system failure occured!", route);
+			router.executeFailureRoute("A critical system failure occured!", response);
 		}
 	}
 
@@ -98,8 +97,7 @@ public class Servlet extends HttpServlet
 		}
 		catch(Exception exception)
 		{
-			Route route = router.getRoute(getServletContext(), request, response);
-			router.executeFailureRoute("A critical system failure occured!", route);
+			router.executeFailureRoute("A critical system failure occured!", response);
 		}
 	}
 }

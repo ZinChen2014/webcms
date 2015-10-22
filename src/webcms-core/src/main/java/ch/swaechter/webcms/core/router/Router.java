@@ -26,11 +26,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.dispatcher.AliasDispatcher;
 import ch.swaechter.webcms.core.dispatcher.Dispatcher;
-import ch.swaechter.webcms.core.dispatcher.MvcDispatcher;
-import ch.swaechter.webcms.core.dispatcher.ResourceDispatcher;
+import ch.swaechter.webcms.core.dispatcher.alias.AliasDispatcher;
+import ch.swaechter.webcms.core.dispatcher.mvc.MvcDispatcher;
+import ch.swaechter.webcms.core.dispatcher.resource.ResourceDispatcher;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 
@@ -44,19 +43,25 @@ import ch.swaechter.webcms.core.settings.Settings;
 public class Router
 {
 	/**
-	 * Container that provides all data.
+	 * Plugin manager who is responsible for all plugins.
 	 */
-	private final Container container;
+	private final PluginManager pluginmanager;
 
 	/**
-	 * Constructor with the plugin manager an dthe settings.
+	 * Settings of the system.
+	 */
+	private final Settings settings;
+
+	/**
+	 * Constructor with the plugin manager an the settings.
 	 *
 	 * @param pluginmanager Plugin manager
 	 * @param settings Settings
 	 */
 	public Router(PluginManager pluginmanager, Settings settings)
 	{
-		this.container = new Container(pluginmanager, settings);
+		this.pluginmanager = pluginmanager;
+		this.settings = settings;
 	}
 
 	/**
@@ -83,11 +88,11 @@ public class Router
 	{
 		ArrayList<Dispatcher> dispatchers = new ArrayList<>();
 		dispatchers.add(new AliasDispatcher());
-		dispatchers.add(new ResourceDispatcher());
-		dispatchers.add(new MvcDispatcher());
+		dispatchers.add(new ResourceDispatcher(pluginmanager, settings));
+		dispatchers.add(new MvcDispatcher(pluginmanager, settings));
 		for(Dispatcher dispatcher : dispatchers)
 		{
-			if(dispatcher.dispatchRoute(route, container))
+			if(dispatcher.dispatchRoute(route))
 			{
 				break;
 			}
@@ -98,12 +103,12 @@ public class Router
 	 * Display a message in case a critical system failure occurs.
 	 *
 	 * @param message Error message
-	 * @param route Route
+	 * @param response HTTP response
 	 * @throws IOException An exception that can occur in case of a stream problem
 	 */
-	public void executeFailureRoute(String message, Route route) throws IOException
+	public void executeFailureRoute(String message, HttpServletResponse response) throws IOException
 	{
-		PrintWriter writer = route.getResponse().getWriter();
+		PrintWriter writer = response.getWriter();
 		writer.println(message);
 		writer.close();
 	}

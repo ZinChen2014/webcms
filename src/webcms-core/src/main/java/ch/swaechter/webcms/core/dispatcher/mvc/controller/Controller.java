@@ -16,25 +16,14 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher;
-
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.router.Route;
+package ch.swaechter.webcms.core.dispatcher.mvc.controller;
 
 /**
- * This class represents a dispatcher that handles URL aliases.
+ * This interface represents a controller who is responsible for the interaction between a model
+ * and a view. A controller contains several methods and each method represents a site action.
  *
  * @author Simon Wächter
  */
-public class AliasDispatcher extends Dispatcher
+public interface Controller
 {
-	/**
-	 * This method handles the given route. In case of a match the method should return true and the router
-	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
-	 */
-	@Override
-	public boolean dispatchRoute(Route route, Container container) throws Exception
-	{
-		return false;
-	}
 }

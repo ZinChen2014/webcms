@@ -16,40 +16,25 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.components.view;
+package ch.swaechter.webcms.core.dispatcher.mvc.view;
 
-import ch.swaechter.webcms.core.components.container.Container;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents a view that can redirect to an internal site.
+ * This class is a placeholder view used for action that don't return data or redirect to another
+ * site.
  *
  * @author Simon Wächter
  */
-public class InternalRedirectView extends View
+public class EmptyView implements View
 {
 	/**
-	 * Redirect URL of the view.
-	 */
-	private final String redirecturl;
-
-	/**
-	 * Constructor with a redirect URL.
-	 *
-	 * @param redirecturl Redirect URL.
-	 */
-	public InternalRedirectView(String redirecturl)
-	{
-		this.redirecturl = redirecturl;
-	}
-
-	/**
-	 * Process the redirect based on the given stream.
+	 * Process nothing because the current view is a placeholder view.
 	 */
 	@Override
-	public void processRoute(Plugin plugin, Route route, Container container) throws Exception
+	public void processRoute(Plugin plugin, Route route) throws Exception
 	{
-		route.getResponse().sendRedirect(route.getRequest().getContextPath() + redirecturl);
+		// Do nothing
 	}
 }

@@ -18,33 +18,20 @@
 
 package ch.swaechter.webcms.textplugin.models;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.model.Model;
-
 /**
  * This class is responsible for all operation on texts.
  *
  * @author Simon Wächter
  */
-public class TextModel extends Model
+public class TextModel
 {
 	/**
-	 * Constructor with the container.
-	 *
-	 * @param container Container that provides all data
-	 */
-	public TextModel(Container container)
-	{
-		super(container);
-	}
-
-	/**
-	 * Get the model name.
+	 * Get the name of the model.
 	 *
 	 * @return Model name
 	 */
-	public String getModelName()
+	public String getName()
 	{
-		return new String("Textmodel");
+		return new String("textmodel");
 	}
 }

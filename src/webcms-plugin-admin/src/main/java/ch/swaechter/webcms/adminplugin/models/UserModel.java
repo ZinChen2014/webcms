@@ -18,34 +18,21 @@
 
 package ch.swaechter.webcms.adminplugin.models;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.model.Model;
-
 /**
  * This class is responsible for the user management like user login, logout, user creation and
  * other operations.
  *
  * @author Simon Wächter
  */
-public class UserModel extends Model
+public class UserModel
 {
 	/**
-	 * Constructor with the container.
-	 *
-	 * @param container Container that provides all data
-	 */
-	public UserModel(Container container)
-	{
-		super(container);
-	}
-
-	/**
-	 * Get the model name.
+	 * Get the name of the model.
 	 *
 	 * @return Model name
 	 */
-	public String getModelName()
+	public String getName()
 	{
-		return new String("Usermodel");
+		return new String("usermodel");
 	}
 }

@@ -18,24 +18,22 @@
 
 package ch.swaechter.webcms.core.dispatcher;
 
-import ch.swaechter.webcms.core.components.container.Container;
 import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents a dispatcher that handles an URL.
+ * This interface represents a dispatcher that handles an URL.
  *
  * @author Simon Wächter
  */
-public abstract class Dispatcher
+public interface Dispatcher
 {
 	/**
 	 * This method handles the given route. In case of a match the method should return true and the router
 	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
 	 *
 	 * @param route Route
-	 * @param container Container with all data
 	 * @return Status of the dispatcher execution
 	 * @throws Exception An exception in case of a critical system failure
 	 */
-	public abstract boolean dispatchRoute(Route route, Container container) throws Exception;
+	public boolean dispatchRoute(Route route) throws Exception;
 }

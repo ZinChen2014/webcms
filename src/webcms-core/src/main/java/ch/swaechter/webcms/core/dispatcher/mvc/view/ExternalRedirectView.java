@@ -16,51 +16,39 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.components.model;
+package ch.swaechter.webcms.core.dispatcher.mvc.view;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.settings.Settings;
+import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents a model who is responsible for the data management or interaction with
- * the database in general.
+ * This class represents a view that can redirect to an external site.
  *
  * @author Simon Wächter
  */
-public abstract class Model
+public class ExternalRedirectView implements View
 {
 	/**
-	 * Container that provides all data.
+	 * Redirect URL of the view.
 	 */
-	private final Container container;
+	private final String redirecturl;
 
 	/**
-	 * Constructor with the container.
+	 * Constructor with the redirect URL.
 	 *
-	 * @param container Container that provides all data
+	 * @param redirecturl Redirect URL.
 	 */
-	public Model(Container container)
+	public ExternalRedirectView(String redirecturl)
 	{
-		this.container = container;
+		this.redirecturl = redirecturl;
 	}
 
 	/**
-	 * Get the container.
-	 *
-	 * @return Container that provides all data
+	 * Process the redirect based on the given stream.
 	 */
-	public Container getContainer()
+	@Override
+	public void processRoute(Plugin plugin, Route route) throws Exception
 	{
-		return container;
-	}
-
-	/**
-	 * Get the settings of the system.
-	 *
-	 * @return Settings
-	 */
-	public Settings getSettings()
-	{
-		return container.getSettings();
+		route.getResponse().sendRedirect(redirecturl);
 	}
 }

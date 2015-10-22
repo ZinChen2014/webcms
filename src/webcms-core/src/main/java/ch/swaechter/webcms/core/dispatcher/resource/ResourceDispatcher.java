@@ -16,49 +16,70 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher;
+package ch.swaechter.webcms.core.dispatcher.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.omg.CORBA.SystemException;
-
 import ch.swaechter.webcms.core.Globals;
 import ch.swaechter.webcms.core.Util;
-import ch.swaechter.webcms.core.components.container.Container;
+import ch.swaechter.webcms.core.dispatcher.Dispatcher;
 import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.router.Route;
+import ch.swaechter.webcms.core.settings.Settings;
 
 /**
  * This class represents the resource dispatcher that handles system resources.
  *
  * @author Simon Wächter
  */
-public class ResourceDispatcher extends Dispatcher
+public class ResourceDispatcher implements Dispatcher
 {
+	/**
+	 * Plugin manager who is responsible for all plugins.
+	 */
+	private final PluginManager pluginmanager;
+
+	/**
+	 * Settings of the system.
+	 */
+	private final Settings settings;
+
+	/**
+	 * Constructor with the plugin manager and the settings.
+	 *
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
+	 */
+	public ResourceDispatcher(PluginManager pluginmanager, Settings settings)
+	{
+		this.pluginmanager = pluginmanager;
+		this.settings = settings;
+	}
+
 	/**
 	 * This method handles the given route. In case of a match the method should return true and the router
 	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
 	 */
 	@Override
-	public boolean dispatchRoute(Route route, Container container) throws Exception
+	public boolean dispatchRoute(Route route) throws Exception
 	{
-		return dispatchResourceRoute(route, container);
+		return dispatchResourceRoute(route);
 	}
 
 	/**
 	 * Handle a resource route.
 	 *
 	 * @param route Route
-	 * @param container Container with the data
 	 * @return Status of the dispatch process
-	 * @throws SystemException An exception in case of a critical system failure
+	 * @throws Exception An exception in case of a critical system failure
 	 */
-	private boolean dispatchResourceRoute(Route route, Container container) throws Exception
+	private boolean dispatchResourceRoute(Route route) throws Exception
 	{
 		String uripath = route.getRequest().getRequestURI().substring(route.getRequest().getContextPath().length());
-		String filepath = Util.trimFirstCharacters(uripath, Globals.DIRECTORY_SEPARATOR + container.getSettings().getResourcePrefix());
+		String filepath = Util.trimFirstCharacters(uripath, Globals.DIRECTORY_SEPARATOR + settings.getResourcePrefix());
 		if(!filepath.equals(Globals.DIRECTORY_SEPARATOR))
 		{
 			InputStream servletinputstream = route.getContext().getResourceAsStream(Globals.WEBAPP_WEBINF_DIRECTORY + filepath);
@@ -76,7 +97,7 @@ public class ResourceDispatcher extends Dispatcher
 			}
 			else
 			{
-				for(Plugin plugin : container.getPluginManager().getPlugins())
+				for(Plugin plugin : pluginmanager.getPlugins())
 				{
 					InputStream plugininputstream = plugin.getClass().getResourceAsStream(filepath);
 					if(plugininputstream != null)

@@ -16,26 +16,24 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.components.view;
+package ch.swaechter.webcms.core.dispatcher.mvc.view;
 
-import ch.swaechter.webcms.core.components.container.Container;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents a view that can be used in a controller to control the action output.
+ * This interface represents a view that can be used in a controller to control the action output.
  *
  * @author Simon Wächter
  */
-public abstract class View
+public interface View
 {
 	/**
 	 * Method that will be used by the system to process the view.
 	 *
 	 * @param plugin Plugin
 	 * @param route Route
-	 * @param container Container that provides all data
 	 * @throws Exception Throws an exception in case an error occurs
 	 */
-	public abstract void processRoute(Plugin plugin, Route route, Container container) throws Exception;
+	public void processRoute(Plugin plugin, Route route) throws Exception;
 }

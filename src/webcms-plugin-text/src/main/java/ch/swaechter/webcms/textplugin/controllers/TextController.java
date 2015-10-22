@@ -18,10 +18,9 @@
 
 package ch.swaechter.webcms.textplugin.controllers;
 
-import ch.swaechter.webcms.core.components.container.Container;
-import ch.swaechter.webcms.core.components.controller.Controller;
-import ch.swaechter.webcms.core.components.view.ModelView;
-import ch.swaechter.webcms.core.components.view.View;
+import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.ModelView;
+import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
 import ch.swaechter.webcms.textplugin.models.TextModel;
 
 /**
@@ -29,21 +28,21 @@ import ch.swaechter.webcms.textplugin.models.TextModel;
  *
  * @author Simon Wächter
  */
-public class TextController extends Controller
+public class TextController implements Controller
 {
 	/**
-	 * Model that contains the text information.
+	 * Text model for the text interaction.
 	 */
-	private final TextModel textmodel = new TextModel(getContainer());
+	private final TextModel textmodel;
 
 	/**
-	 * Constructor with the container.
+	 * Constructor with the text model.
 	 *
-	 * @param container Container that provides all data
+	 * @param textmodel Text model for the text interaction
 	 */
-	public TextController(Container container)
+	public TextController(TextModel textmodel)
 	{
-		super(container);
+		this.textmodel = textmodel;
 	}
 
 	/**
@@ -53,8 +52,8 @@ public class TextController extends Controller
 	 */
 	public View index()
 	{
-		ModelView view = new ModelView("textindex");
-		view.addAttribute("modelname", textmodel.getModelName());
-		return view;
+		ModelView modelview = new ModelView("textindex");
+		modelview.addAttribute("modelname", textmodel.getName());
+		return modelview;
 	}
 }
