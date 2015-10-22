@@ -16,54 +16,47 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.application;
+package ch.swaechter.webcms.textplugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import ch.swaechter.webcms.adminplugin.AdminPlugin;
-import ch.swaechter.webcms.core.Servlet;
+import ch.swaechter.webcms.core.components.container.Container;
+import ch.swaechter.webcms.core.components.controller.Controller;
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.settings.Settings;
-import ch.swaechter.webcms.textplugin.TextPlugin;
+import ch.swaechter.webcms.textplugin.controllers.TextController;
 
 /**
- * This class represents the servlet configuration.
+ * This plugin serves as a simple text site plugin that is able to display texts.
  *
  * @author Simon Wächter
  */
-public class Application extends Servlet
+public class TextPlugin implements Plugin
 {
 	/**
-	 * Generated serialization ID.
+	 * Get the system plugin name.
 	 */
-	private final static long serialVersionUID = 1L;
-
-	/**
-	 * Constructor that passes the configuration to the servlet.
-	 */
-	public Application()
+	@Override
+	public String getSystemName()
 	{
-		super(getSettings(), getPlugins());
+		return new String("text");
 	}
 
 	/**
-	 * Get the settings.
-	 *
-	 * @return Settings
+	 * Get the displayable plugin name.
 	 */
-	public static Settings getSettings()
+	@Override
+	public String getDisplayableName()
 	{
-		return new Settings("/text/index", "static");
+		return new String("Text");
 	}
 
 	/**
-	 * Get all plugins.
-	 *
-	 * @return Plugins
+	 * Get all initialized controllers.
 	 */
-	public static ArrayList<Plugin> getPlugins()
+	@Override
+	public ArrayList<Controller> getControllers(Container container)
 	{
-		return new ArrayList<>(Arrays.asList(new AdminPlugin(), new TextPlugin()));
+		return new ArrayList<Controller>(Arrays.asList(new TextController(container)));
 	}
 }

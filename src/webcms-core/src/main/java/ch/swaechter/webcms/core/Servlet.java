@@ -19,12 +19,18 @@
 package ch.swaechter.webcms.core;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.plugin.PluginManager;
+import ch.swaechter.webcms.core.router.Route;
+import ch.swaechter.webcms.core.router.Router;
+import ch.swaechter.webcms.core.settings.Settings;
 
 /**
  * This class is responsible for the servlet management and uses the platform for the task.
@@ -40,10 +46,25 @@ public class Servlet extends HttpServlet
 	private final static long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with the required settings.
+	 * Plugin manager who is responsible for all plugins.
 	 */
-	public Servlet()
+	private final PluginManager pluginmanager;
+
+	/**
+	 * Router that is responsible for the routing.
+	 */
+	private final Router router;
+
+	/**
+	 * Constructor with the required settings.
+	 *
+	 * @param settings Settings of the CMS
+	 * @param plugins Plugins that should be loaded
+	 */
+	public Servlet(Settings settings, ArrayList<Plugin> plugins)
 	{
+		pluginmanager = new PluginManager(plugins);
+		router = new Router(pluginmanager, settings);
 	}
 
 	/**
@@ -52,9 +73,16 @@ public class Servlet extends HttpServlet
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		PrintWriter writer = response.getWriter();
-		writer.println("You see the WebCMS servlet.");
-		writer.close();
+		try
+		{
+			Route route = router.getRoute(getServletContext(), request, response);
+			router.executeRoute(route);
+		}
+		catch(Exception exception)
+		{
+			Route route = router.getRoute(getServletContext(), request, response);
+			router.executeFailureRoute("A critical system failure occured!", route);
+		}
 	}
 
 	/**
@@ -63,8 +91,15 @@ public class Servlet extends HttpServlet
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		PrintWriter writer = response.getWriter();
-		writer.println("You see the WebCMS servlet.");
-		writer.close();
+		try
+		{
+			Route route = router.getRoute(getServletContext(), request, response);
+			router.executeRoute(route);
+		}
+		catch(Exception exception)
+		{
+			Route route = router.getRoute(getServletContext(), request, response);
+			router.executeFailureRoute("A critical system failure occured!", route);
+		}
 	}
 }

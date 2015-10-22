@@ -15,6 +15,16 @@
 			<artifactId>webcms-core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.swaechter</groupId>
+			<artifactId>webcms-plugin-admin</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.swaechter</groupId>
+			<artifactId>webcms-plugin-text</artifactId>
+			<version>0.1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>webcms</finalName>

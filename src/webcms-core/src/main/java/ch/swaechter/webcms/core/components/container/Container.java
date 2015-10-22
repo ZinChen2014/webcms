@@ -16,35 +16,48 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.application;
+package ch.swaechter.webcms.core.components.container;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import ch.swaechter.webcms.adminplugin.AdminPlugin;
-import ch.swaechter.webcms.core.Servlet;
-import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
-import ch.swaechter.webcms.textplugin.TextPlugin;
 
 /**
- * This class represents the servlet configuration.
+ * This class represents a container that is accessible from the plugins and provides all
+ * components.
  *
  * @author Simon Wächter
  */
-public class Application extends Servlet
+public class Container
 {
 	/**
-	 * Generated serialization ID.
+	 * Plugin manager that is responsible for the plugins.
 	 */
-	private final static long serialVersionUID = 1L;
+	private final PluginManager pluginmanager;
 
 	/**
-	 * Constructor that passes the configuration to the servlet.
+	 * Settings that are used in the plugins.
 	 */
-	public Application()
+	private final Settings settings;
+
+	/**
+	 * Constructor with the settings.
+	 *
+	 * @param settings Settings
+	 */
+	public Container(PluginManager pluginmanager, Settings settings)
 	{
-		super(getSettings(), getPlugins());
+		this.pluginmanager = pluginmanager;
+		this.settings = settings;
+	}
+
+	/**
+	 * Get the plugin manager.
+	 *
+	 * @return Plugin manager
+	 */
+	public PluginManager getPluginManager()
+	{
+		return pluginmanager;
 	}
 
 	/**
@@ -52,18 +65,8 @@ public class Application extends Servlet
 	 *
 	 * @return Settings
 	 */
-	public static Settings getSettings()
+	public Settings getSettings()
 	{
-		return new Settings("/text/index", "static");
-	}
-
-	/**
-	 * Get all plugins.
-	 *
-	 * @return Plugins
-	 */
-	public static ArrayList<Plugin> getPlugins()
-	{
-		return new ArrayList<>(Arrays.asList(new AdminPlugin(), new TextPlugin()));
+		return settings;
 	}
 }

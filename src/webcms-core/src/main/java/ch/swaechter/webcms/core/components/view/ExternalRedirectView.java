@@ -16,54 +16,40 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.application;
+package ch.swaechter.webcms.core.components.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import ch.swaechter.webcms.adminplugin.AdminPlugin;
-import ch.swaechter.webcms.core.Servlet;
+import ch.swaechter.webcms.core.components.container.Container;
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.settings.Settings;
-import ch.swaechter.webcms.textplugin.TextPlugin;
+import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents the servlet configuration.
+ * This class represents a view that can redirect to an external site.
  *
  * @author Simon Wächter
  */
-public class Application extends Servlet
+public class ExternalRedirectView extends View
 {
 	/**
-	 * Generated serialization ID.
+	 * Redirect URL of the view.
 	 */
-	private final static long serialVersionUID = 1L;
+	private final String redirecturl;
 
 	/**
-	 * Constructor that passes the configuration to the servlet.
+	 * Constructor with the redirect URL.
+	 *
+	 * @param redirecturl Redirect URL.
 	 */
-	public Application()
+	public ExternalRedirectView(String redirecturl)
 	{
-		super(getSettings(), getPlugins());
+		this.redirecturl = redirecturl;
 	}
 
 	/**
-	 * Get the settings.
-	 *
-	 * @return Settings
+	 * Process the redirect based on the given stream.
 	 */
-	public static Settings getSettings()
+	@Override
+	public void processRoute(Plugin plugin, Route route, Container container) throws Exception
 	{
-		return new Settings("/text/index", "static");
-	}
-
-	/**
-	 * Get all plugins.
-	 *
-	 * @return Plugins
-	 */
-	public static ArrayList<Plugin> getPlugins()
-	{
-		return new ArrayList<>(Arrays.asList(new AdminPlugin(), new TextPlugin()));
+		route.getResponse().sendRedirect(redirecturl);
 	}
 }

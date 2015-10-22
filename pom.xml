@@ -8,6 +8,8 @@
 	<modules>
 		<module>src/webcms-application</module>
 		<module>src/webcms-core</module>
+		<module>src/webcms-plugin-admin</module>
+		<module>src/webcms-plugin-text</module>
 	</modules>
 	<build>
 		<plugins>

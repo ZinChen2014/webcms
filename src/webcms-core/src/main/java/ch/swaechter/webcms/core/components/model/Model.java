@@ -16,54 +16,51 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.application;
+package ch.swaechter.webcms.core.components.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import ch.swaechter.webcms.adminplugin.AdminPlugin;
-import ch.swaechter.webcms.core.Servlet;
-import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.components.container.Container;
 import ch.swaechter.webcms.core.settings.Settings;
-import ch.swaechter.webcms.textplugin.TextPlugin;
 
 /**
- * This class represents the servlet configuration.
+ * This class represents a model who is responsible for the data management or interaction with
+ * the database in general.
  *
  * @author Simon Wächter
  */
-public class Application extends Servlet
+public abstract class Model
 {
 	/**
-	 * Generated serialization ID.
+	 * Container that provides all data.
 	 */
-	private final static long serialVersionUID = 1L;
+	private final Container container;
 
 	/**
-	 * Constructor that passes the configuration to the servlet.
+	 * Constructor with the container.
+	 *
+	 * @param container Container that provides all data
 	 */
-	public Application()
+	public Model(Container container)
 	{
-		super(getSettings(), getPlugins());
+		this.container = container;
 	}
 
 	/**
-	 * Get the settings.
+	 * Get the container.
+	 *
+	 * @return Container that provides all data
+	 */
+	public Container getContainer()
+	{
+		return container;
+	}
+
+	/**
+	 * Get the settings of the system.
 	 *
 	 * @return Settings
 	 */
-	public static Settings getSettings()
+	public Settings getSettings()
 	{
-		return new Settings("/text/index", "static");
-	}
-
-	/**
-	 * Get all plugins.
-	 *
-	 * @return Plugins
-	 */
-	public static ArrayList<Plugin> getPlugins()
-	{
-		return new ArrayList<>(Arrays.asList(new AdminPlugin(), new TextPlugin()));
+		return container.getSettings();
 	}
 }
