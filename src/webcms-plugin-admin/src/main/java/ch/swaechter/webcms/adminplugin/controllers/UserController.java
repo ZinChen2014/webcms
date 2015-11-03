@@ -25,27 +25,30 @@ import ch.swaechter.webcms.core.dispatcher.mvc.view.ExternalRedirectView;
 import ch.swaechter.webcms.core.dispatcher.mvc.view.InternalRedirectView;
 import ch.swaechter.webcms.core.dispatcher.mvc.view.ModelView;
 import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
+import ch.swaechter.webcms.core.plugin.PluginManager;
+import ch.swaechter.webcms.core.settings.Settings;
 
 /**
  * This class is responsible for the user actions like the login or logout process.
  *
  * @author Simon Wächter
  */
-public class UserController implements Controller
+public class UserController extends Controller
 {
 	/**
 	 * User model for the user interaction.
 	 */
-	private final UserModel usermodel;
+	private final UserModel usermodel = new UserModel(getPluginManager(), getSettings());
 
 	/**
-	 * Constructor with the user model.
+	 * Constructor with the plugin manager and the settings.
 	 *
-	 * @param usermodel User model for the user interaction
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
 	 */
-	public UserController(UserModel usermodel)
+	public UserController(PluginManager pluginmanager, Settings settings)
 	{
-		this.usermodel = usermodel;
+		super(pluginmanager, settings);
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class UserController implements Controller
 	public View index()
 	{
 		ModelView modelview = new ModelView("userindex");
-		modelview.addAttribute("modelname", usermodel.getName());
+		modelview.addAttribute("modelname", usermodel.getClass().getName());
 		return modelview;
 	}
 

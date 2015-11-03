@@ -21,6 +21,8 @@ package ch.swaechter.webcms.textplugin.controllers;
 import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
 import ch.swaechter.webcms.core.dispatcher.mvc.view.ModelView;
 import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
+import ch.swaechter.webcms.core.plugin.PluginManager;
+import ch.swaechter.webcms.core.settings.Settings;
 import ch.swaechter.webcms.textplugin.models.TextModel;
 
 /**
@@ -28,21 +30,22 @@ import ch.swaechter.webcms.textplugin.models.TextModel;
  *
  * @author Simon Wächter
  */
-public class TextController implements Controller
+public class TextController extends Controller
 {
 	/**
 	 * Text model for the text interaction.
 	 */
-	private final TextModel textmodel;
+	private final TextModel textmodel = new TextModel(getPluginManager(), getSettings());
 
 	/**
-	 * Constructor with the text model.
+	 * Constructor with the plugin manager and the settings.
 	 *
-	 * @param textmodel Text model for the text interaction
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
 	 */
-	public TextController(TextModel textmodel)
+	public TextController(PluginManager pluginmanager, Settings settings)
 	{
-		this.textmodel = textmodel;
+		super(pluginmanager, settings);
 	}
 
 	/**
@@ -53,7 +56,7 @@ public class TextController implements Controller
 	public View index()
 	{
 		ModelView modelview = new ModelView("textindex");
-		modelview.addAttribute("modelname", textmodel.getName());
+		modelview.addAttribute("modelname", textmodel.getClass().getName());
 		return modelview;
 	}
 }

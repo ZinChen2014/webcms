@@ -18,20 +18,25 @@
 
 package ch.swaechter.webcms.textplugin.models;
 
+import ch.swaechter.webcms.core.dispatcher.mvc.model.Model;
+import ch.swaechter.webcms.core.plugin.PluginManager;
+import ch.swaechter.webcms.core.settings.Settings;
+
 /**
  * This class is responsible for all operation on texts.
  *
  * @author Simon Wächter
  */
-public class TextModel
+public class TextModel extends Model
 {
 	/**
-	 * Get the name of the model.
+	 * Constructor with the plugin manager and the settings.
 	 *
-	 * @return Model name
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
 	 */
-	public String getName()
+	public TextModel(PluginManager pluginmanager, Settings settings)
 	{
-		return new String("textmodel");
+		super(pluginmanager, settings);
 	}
 }

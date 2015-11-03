@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ch.swaechter.webcms.adminplugin.controllers.UserController;
-import ch.swaechter.webcms.adminplugin.models.UserModel;
 import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
@@ -59,7 +58,6 @@ public class AdminPlugin implements Plugin
 	@Override
 	public ArrayList<Controller> getControllers(PluginManager pluginmanager, Settings settings)
 	{
-		UserModel usermodel = new UserModel();
-		return new ArrayList<Controller>(Arrays.asList(new UserController(usermodel)));
+		return new ArrayList<Controller>(Arrays.asList(new UserController(pluginmanager, settings)));
 	}
 }

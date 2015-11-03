@@ -18,21 +18,26 @@
 
 package ch.swaechter.webcms.adminplugin.models;
 
+import ch.swaechter.webcms.core.dispatcher.mvc.model.Model;
+import ch.swaechter.webcms.core.plugin.PluginManager;
+import ch.swaechter.webcms.core.settings.Settings;
+
 /**
  * This class is responsible for the user management like user login, logout, user creation and
  * other operations.
  *
  * @author Simon Wächter
  */
-public class UserModel
+public class UserModel extends Model
 {
 	/**
-	 * Get the name of the model.
+	 * Constructor with the plugin manager and the settings.
 	 *
-	 * @return Model name
+	 * @param pluginmanager Plugin manager
+	 * @param settings Settings
 	 */
-	public String getName()
+	public UserModel(PluginManager pluginmanager, Settings settings)
 	{
-		return new String("usermodel");
+		super(pluginmanager, settings);
 	}
 }

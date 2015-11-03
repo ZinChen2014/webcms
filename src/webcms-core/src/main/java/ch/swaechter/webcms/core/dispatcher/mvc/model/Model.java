@@ -16,18 +16,17 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.mvc.controller;
+package ch.swaechter.webcms.core.dispatcher.mvc.model;
 
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 
 /**
- * This class represents a controller who is responsible for the interaction between a model
- * and a view. A controller contains several methods and each method represents a site action.
+ * This class represents a model who is responsible for the backend communication.
  *
  * @author Simon Wächter
  */
-public class Controller
+public class Model
 {
 	/**
 	 * Plugin manager who is responsible for all plugins.
@@ -45,7 +44,7 @@ public class Controller
 	 * @param pluginmanager Plugin manager
 	 * @param settings Settings
 	 */
-	public Controller(PluginManager pluginmanager, Settings settings)
+	public Model(PluginManager pluginmanager, Settings settings)
 	{
 		this.pluginmanager = pluginmanager;
 		this.settings = settings;

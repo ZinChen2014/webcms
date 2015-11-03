@@ -26,7 +26,6 @@ import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 import ch.swaechter.webcms.textplugin.controllers.TextController;
-import ch.swaechter.webcms.textplugin.models.TextModel;
 
 /**
  * This plugin serves as a simple text site plugin that is able to display texts.
@@ -59,7 +58,6 @@ public class TextPlugin implements Plugin
 	@Override
 	public ArrayList<Controller> getControllers(PluginManager pluginmanager, Settings settings)
 	{
-		TextModel textmodel = new TextModel();
-		return new ArrayList<Controller>(Arrays.asList(new TextController(textmodel)));
+		return new ArrayList<Controller>(Arrays.asList(new TextController(pluginmanager, settings)));
 	}
 }
