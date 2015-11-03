@@ -51,7 +51,7 @@ public class TextController extends Controller
 	/**
 	 * Index action of the text controller.
 	 *
-	 * @return Normal JSP view
+	 * @return Normal view
 	 */
 	public View index()
 	{

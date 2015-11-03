@@ -54,7 +54,7 @@ public class UserController extends Controller
 	/**
 	 * Index action of the user controller.
 	 *
-	 * @return Normal JSP view
+	 * @return Normal view
 	 */
 	public View index()
 	{
