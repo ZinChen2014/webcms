@@ -25,37 +25,28 @@ import java.io.OutputStream;
 import ch.swaechter.webcms.core.Globals;
 import ch.swaechter.webcms.core.Util;
 import ch.swaechter.webcms.core.dispatcher.Dispatcher;
-import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.router.Route;
 import ch.swaechter.webcms.core.settings.Settings;
 
 /**
- * This class represents the resource dispatcher that handles system resources.
+ * This class represents the resource dispatcher that handles WAR system resources.
  *
  * @author Simon Wächter
  */
-public class ResourceDispatcher implements Dispatcher
+public class WarResourceDispatcher implements Dispatcher
 {
-	/**
-	 * Plugin manager who is responsible for all plugins.
-	 */
-	private final PluginManager pluginmanager;
-
 	/**
 	 * Settings of the system.
 	 */
 	private final Settings settings;
 
 	/**
-	 * Constructor with the plugin manager and the settings.
+	 * Constructor with the settings.
 	 *
-	 * @param pluginmanager Plugin manager
 	 * @param settings Settings
 	 */
-	public ResourceDispatcher(PluginManager pluginmanager, Settings settings)
+	public WarResourceDispatcher(Settings settings)
 	{
-		this.pluginmanager = pluginmanager;
 		this.settings = settings;
 	}
 
@@ -93,25 +84,6 @@ public class ResourceDispatcher implements Dispatcher
 				catch(IOException exception)
 				{
 					return false;
-				}
-			}
-			else
-			{
-				for(Plugin plugin : pluginmanager.getPlugins())
-				{
-					InputStream plugininputstream = plugin.getClass().getResourceAsStream(filepath);
-					if(plugininputstream != null)
-					{
-						try
-						{
-							copyStream(plugininputstream, route.getResponse().getOutputStream());
-							return true;
-						}
-						catch(IOException exception)
-						{
-							return false;
-						}
-					}
 				}
 			}
 		}

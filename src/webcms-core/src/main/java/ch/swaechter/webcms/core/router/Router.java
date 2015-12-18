@@ -29,7 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import ch.swaechter.webcms.core.dispatcher.Dispatcher;
 import ch.swaechter.webcms.core.dispatcher.alias.AliasDispatcher;
 import ch.swaechter.webcms.core.dispatcher.mvc.MvcDispatcher;
-import ch.swaechter.webcms.core.dispatcher.resource.ResourceDispatcher;
+import ch.swaechter.webcms.core.dispatcher.resource.JarResourceDispatcher;
+import ch.swaechter.webcms.core.dispatcher.resource.WarResourceDispatcher;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 
@@ -88,7 +89,8 @@ public class Router
 	{
 		ArrayList<Dispatcher> dispatchers = new ArrayList<>();
 		dispatchers.add(new AliasDispatcher());
-		dispatchers.add(new ResourceDispatcher(pluginmanager, settings));
+		dispatchers.add(new WarResourceDispatcher(settings));
+		dispatchers.add(new JarResourceDispatcher(pluginmanager, settings));
 		dispatchers.add(new MvcDispatcher(pluginmanager, settings));
 		for(Dispatcher dispatcher : dispatchers)
 		{
