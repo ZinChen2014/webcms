@@ -44,14 +44,10 @@ import ch.swaechter.webcms.core.settings.Settings;
 public class Router
 {
 	/**
-	 * Plugin manager who is responsible for all plugins.
+	 * Dispatchers that manage the route.
 	 */
-	private final PluginManager pluginmanager;
+	private final ArrayList<Dispatcher> dispatchers;
 
-	/**
-	 * Settings of the system.
-	 */
-	private final Settings settings;
 
 	/**
 	 * Constructor with the plugin manager an the settings.
@@ -61,8 +57,11 @@ public class Router
 	 */
 	public Router(PluginManager pluginmanager, Settings settings)
 	{
-		this.pluginmanager = pluginmanager;
-		this.settings = settings;
+		dispatchers = new ArrayList<>();
+		dispatchers.add(new AliasDispatcher());
+		dispatchers.add(new WarResourceDispatcher(settings));
+		dispatchers.add(new JarResourceDispatcher(pluginmanager, settings));
+		dispatchers.add(new MvcDispatcher(pluginmanager, settings));
 	}
 
 	/**
@@ -87,11 +86,6 @@ public class Router
 	 */
 	public void executeRoute(Route route) throws Exception
 	{
-		ArrayList<Dispatcher> dispatchers = new ArrayList<>();
-		dispatchers.add(new AliasDispatcher());
-		dispatchers.add(new WarResourceDispatcher(settings));
-		dispatchers.add(new JarResourceDispatcher(pluginmanager, settings));
-		dispatchers.add(new MvcDispatcher(pluginmanager, settings));
 		for(Dispatcher dispatcher : dispatchers)
 		{
 			if(dispatcher.dispatchRoute(route))
