@@ -58,24 +58,13 @@ public class MvcDispatcher implements Dispatcher
 		this.pluginmanager = pluginmanager;
 		this.settings = settings;
 	}
+
 	/**
 	 * This method handles the given route. In case of a match the method should return true and the router
 	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
 	 */
 	@Override
 	public boolean dispatchRoute(Route route) throws Exception
-	{
-		return dispatchMvcRoute(route);
-	}
-
-	/**
-	 * Handle a MVC route.
-	 *
-	 * @param route Route
-	 * @return Status of the dispatch process
-	 * @throws Exception An exception in case of a critical system failure
-	 */
-	private boolean dispatchMvcRoute(Route route) throws Exception
 	{
 		String path =  Util.trimFirstCharacters(route.getPath(), Globals.DIRECTORY_SEPARATOR);
 		String[] parameters = path.split(Globals.DIRECTORY_SEPARATOR);
@@ -99,7 +88,7 @@ public class MvcDispatcher implements Dispatcher
 					{
 						if(!route.getPath().equals(settings.getDefaultRoute()))
 						{
-							return dispatchMvcRoute(new Route(settings.getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()));
+							return dispatchRoute(new Route(settings.getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()));
 						}
 						else
 						{
@@ -109,6 +98,6 @@ public class MvcDispatcher implements Dispatcher
 				}
 			}
 		}
-		return dispatchMvcRoute(new Route(settings.getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()));
+		return dispatchRoute(new Route(settings.getDefaultRoute(), route.getContext(), route.getRequest(), route.getResponse()));
 	}
 }

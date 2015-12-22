@@ -25,28 +25,37 @@ import java.io.OutputStream;
 import ch.swaechter.webcms.core.Globals;
 import ch.swaechter.webcms.core.Util;
 import ch.swaechter.webcms.core.dispatcher.Dispatcher;
+import ch.swaechter.webcms.core.plugin.Plugin;
+import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.router.Route;
 import ch.swaechter.webcms.core.settings.Settings;
 
 /**
- * This class represents the resource dispatcher that handles WAR system resources.
+ * This class represents the resource dispatcher that handles system resources.
  *
  * @author Simon Wächter
  */
-public class WarResourceDispatcher implements Dispatcher
+public class ResourceDispatcher implements Dispatcher
 {
+	/**
+	 * Plugin manager who is responsible for all plugins.
+	 */
+	private final PluginManager pluginmanager;
+
 	/**
 	 * Settings of the system.
 	 */
 	private final Settings settings;
 
 	/**
-	 * Constructor with the settings.
+	 * Constructor with the plugin manager and the settings.
 	 *
+	 * @param pluginmanager Plugin manager
 	 * @param settings Settings
 	 */
-	public WarResourceDispatcher(Settings settings)
+	public ResourceDispatcher(PluginManager pluginmanager, Settings settings)
 	{
+		this.pluginmanager = pluginmanager;
 		this.settings = settings;
 	}
 
@@ -57,21 +66,9 @@ public class WarResourceDispatcher implements Dispatcher
 	@Override
 	public boolean dispatchRoute(Route route) throws Exception
 	{
-		return dispatchResourceRoute(route);
-	}
-
-	/**
-	 * Handle a resource route.
-	 *
-	 * @param route Route
-	 * @return Status of the dispatch process
-	 * @throws Exception An exception in case of a critical system failure
-	 */
-	private boolean dispatchResourceRoute(Route route) throws Exception
-	{
 		String uripath = route.getRequest().getRequestURI().substring(route.getRequest().getContextPath().length());
 		String filepath = Util.trimFirstCharacters(uripath, Globals.DIRECTORY_SEPARATOR + settings.getResourcePrefix());
-		if(!filepath.equals(Globals.DIRECTORY_SEPARATOR))
+		if(filepath.length() > 0 && !filepath.equals(Globals.DIRECTORY_SEPARATOR))
 		{
 			InputStream servletinputstream = route.getContext().getResourceAsStream(Globals.WEBAPP_WEBINF_DIRECTORY + filepath);
 			if(servletinputstream != null)
@@ -84,6 +81,25 @@ public class WarResourceDispatcher implements Dispatcher
 				catch(IOException exception)
 				{
 					return false;
+				}
+			}
+			else
+			{
+				for(Plugin plugin : pluginmanager.getPlugins())
+				{
+					InputStream plugininputstream = plugin.getClass().getResourceAsStream(filepath);
+					if(plugininputstream != null)
+					{
+						try
+						{
+							copyStream(plugininputstream, route.getResponse().getOutputStream());
+							return true;
+						}
+						catch(IOException exception)
+						{
+							return false;
+						}
+					}
 				}
 			}
 		}
