@@ -27,9 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.plugin.PluginManager;
-import ch.swaechter.webcms.core.router.Route;
-import ch.swaechter.webcms.core.router.Router;
 import ch.swaechter.webcms.core.settings.Settings;
 
 /**
@@ -46,42 +43,28 @@ public class Servlet extends HttpServlet
 	private final static long serialVersionUID = 1L;
 
 	/**
-	 * Plugin manager who is responsible for all plugins.
+	 * Platform of the system.
 	 */
-	private final PluginManager pluginmanager;
-
-	/**
-	 * Router that is responsible for the routing.
-	 */
-	private final Router router;
+	private final Platform platform;
 
 	/**
 	 * Constructor with the required settings.
 	 *
-	 * @param settings Settings of the CMS
 	 * @param plugins Plugins that should be loaded
+	 * @param settings Settings of the CMS
 	 */
-	public Servlet(Settings settings, ArrayList<Plugin> plugins)
+	public Servlet(ArrayList<Plugin> plugins, Settings settings)
 	{
-		pluginmanager = new PluginManager(plugins);
-		router = new Router(pluginmanager, settings);
+		platform = new Platform(plugins, settings);
 	}
-
+	
 	/**
 	 * Handle a GET request and send the generated content as response.
 	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		try
-		{
-			Route route = router.getRoute(getServletContext(), request, response);
-			router.executeRoute(route);
-		}
-		catch(Exception exception)
-		{
-			router.executeFailureRoute("A critical system failure occured!", response);
-		}
+		platform.handleRequest(getServletContext(), request, response);
 	}
 
 	/**
@@ -90,14 +73,6 @@ public class Servlet extends HttpServlet
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		try
-		{
-			Route route = router.getRoute(getServletContext(), request, response);
-			router.executeRoute(route);
-		}
-		catch(Exception exception)
-		{
-			router.executeFailureRoute("A critical system failure occured!", response);
-		}
+		platform.handleRequest(getServletContext(), request, response);
 	}
 }

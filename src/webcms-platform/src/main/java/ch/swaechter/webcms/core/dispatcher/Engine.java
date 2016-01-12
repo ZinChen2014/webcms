@@ -25,7 +25,7 @@ import ch.swaechter.webcms.core.router.Route;
  *
  * @author Simon Wächter
  */
-public interface Dispatcher
+public interface Engine
 {
 	/**
 	 * This method handles the given route. In case of a match the method should return true and the router

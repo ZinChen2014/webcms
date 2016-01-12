@@ -21,21 +21,21 @@ package ch.swaechter.webcms.core.dispatcher.mvc;
 import java.lang.reflect.Method;
 
 import ch.swaechter.webcms.core.Globals;
-import ch.swaechter.webcms.core.Util;
-import ch.swaechter.webcms.core.dispatcher.Dispatcher;
+import ch.swaechter.webcms.core.dispatcher.Engine;
 import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
 import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.router.Route;
 import ch.swaechter.webcms.core.settings.Settings;
+import ch.swaechter.webcms.core.utils.StringUtil;
 
 /**
  * This class represents a dispatcher that handles all MVC component.
  *
  * @author Simon Wächter
  */
-public class MvcDispatcher implements Dispatcher
+public class MvcDispatcher implements Engine
 {
 	/**
 	 * Plugin manager who is responsible for all plugins.
@@ -66,7 +66,7 @@ public class MvcDispatcher implements Dispatcher
 	@Override
 	public boolean dispatchRoute(Route route) throws Exception
 	{
-		String path =  Util.trimFirstCharacters(route.getPath(), Globals.DIRECTORY_SEPARATOR);
+		String path =  StringUtil.trimFirstCharacters(route.getPath(), Globals.DIRECTORY_SEPARATOR);
 		String[] parameters = path.split(Globals.DIRECTORY_SEPARATOR);
 		String controllerstring = (parameters.length > 0) ? parameters[0] : new String();
 		String actionstring = (parameters.length > 1) ? parameters[1] : new String();

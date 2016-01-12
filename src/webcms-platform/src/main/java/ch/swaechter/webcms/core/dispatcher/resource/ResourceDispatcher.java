@@ -23,19 +23,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import ch.swaechter.webcms.core.Globals;
-import ch.swaechter.webcms.core.Util;
-import ch.swaechter.webcms.core.dispatcher.Dispatcher;
+import ch.swaechter.webcms.core.dispatcher.Engine;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.router.Route;
 import ch.swaechter.webcms.core.settings.Settings;
+import ch.swaechter.webcms.core.utils.StringUtil;
 
 /**
  * This class represents the resource dispatcher that handles system resources.
  *
  * @author Simon Wächter
  */
-public class ResourceDispatcher implements Dispatcher
+public class ResourceDispatcher implements Engine
 {
 	/**
 	 * Plugin manager who is responsible for all plugins.
@@ -67,7 +67,7 @@ public class ResourceDispatcher implements Dispatcher
 	public boolean dispatchRoute(Route route) throws Exception
 	{
 		String uripath = route.getRequest().getRequestURI().substring(route.getRequest().getContextPath().length());
-		String filepath = Util.trimFirstCharacters(uripath, Globals.DIRECTORY_SEPARATOR + settings.getResourcePrefix());
+		String filepath = StringUtil.trimFirstCharacters(uripath, Globals.DIRECTORY_SEPARATOR + settings.getResourcePrefix());
 		if(filepath.length() > 0 && !filepath.equals(Globals.DIRECTORY_SEPARATOR))
 		{
 			InputStream servletinputstream = route.getContext().getResourceAsStream(Globals.WEBAPP_WEBINF_DIRECTORY + filepath);

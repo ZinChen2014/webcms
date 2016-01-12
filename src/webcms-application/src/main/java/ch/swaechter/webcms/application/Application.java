@@ -44,17 +44,7 @@ public class Application extends Servlet
 	 */
 	public Application()
 	{
-		super(getSettings(), getPlugins());
-	}
-
-	/**
-	 * Get the settings.
-	 *
-	 * @return Settings
-	 */
-	public static Settings getSettings()
-	{
-		return new Settings("/text/index", "static");
+		super(getPlugins(), getSettings());
 	}
 
 	/**
@@ -65,5 +55,15 @@ public class Application extends Servlet
 	public static ArrayList<Plugin> getPlugins()
 	{
 		return new ArrayList<>(Arrays.asList(new AdminPlugin(), new TextPlugin()));
+	}
+
+	/**
+	 * Get the settings.
+	 *
+	 * @return Settings
+	 */
+	public static Settings getSettings()
+	{
+		return new Settings("/text/index", "static");
 	}
 }

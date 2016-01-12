@@ -16,14 +16,14 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core;
+package ch.swaechter.webcms.core.utils;
 
 /**
- * This class contains several useful methods.
+ * This class contains several useful string methods.
  *
  * @author Simon Wächter
  */
-public class Util
+public class StringUtil
 {
 	/**
 	 * Remove a substring from another string.

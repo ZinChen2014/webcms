@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>ch.swaechter</groupId>
-			<artifactId>webcms-core</artifactId>
+			<artifactId>webcms-platform</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<dependency>

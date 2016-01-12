@@ -7,7 +7,7 @@
 		<artifactId>webcms</artifactId>
 		<version>0.1.0</version>
 	</parent>
-	<artifactId>webcms-core</artifactId>
+	<artifactId>webcms-platform</artifactId>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>

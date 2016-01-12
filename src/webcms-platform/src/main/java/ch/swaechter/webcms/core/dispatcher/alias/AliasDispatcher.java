@@ -18,7 +18,7 @@
 
 package ch.swaechter.webcms.core.dispatcher.alias;
 
-import ch.swaechter.webcms.core.dispatcher.Dispatcher;
+import ch.swaechter.webcms.core.dispatcher.Engine;
 import ch.swaechter.webcms.core.router.Route;
 
 /**
@@ -26,7 +26,7 @@ import ch.swaechter.webcms.core.router.Route;
  *
  * @author Simon Wächter
  */
-public class AliasDispatcher implements Dispatcher
+public class AliasDispatcher implements Engine
 {
 	/**
 	 * This method handles the given route. In case of a match the method should return true and the router
