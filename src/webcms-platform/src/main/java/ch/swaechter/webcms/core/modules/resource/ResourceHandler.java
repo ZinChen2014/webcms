@@ -16,72 +16,62 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.resource;
+package ch.swaechter.webcms.core.modules.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import ch.swaechter.webcms.core.Globals;
-import ch.swaechter.webcms.core.dispatcher.Engine;
+import ch.swaechter.webcms.core.dispatcher.Context;
+import ch.swaechter.webcms.core.dispatcher.Handler;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
-import ch.swaechter.webcms.core.router.Route;
 import ch.swaechter.webcms.core.settings.Settings;
 import ch.swaechter.webcms.core.utils.StringUtil;
 
 /**
- * This class represents the resource dispatcher that handles system resources.
+ * This class represents the resource handler that handles system resources.
  *
  * @author Simon Wächter
  */
-public class ResourceDispatcher implements Engine
+public class ResourceHandler implements Handler
 {
-	/**
-	 * Plugin manager who is responsible for all plugins.
-	 */
 	private final PluginManager pluginmanager;
 
-	/**
-	 * Settings of the system.
-	 */
 	private final Settings settings;
 
-	/**
-	 * Constructor with the plugin manager and the settings.
-	 *
-	 * @param pluginmanager Plugin manager
-	 * @param settings Settings
-	 */
-	public ResourceDispatcher(PluginManager pluginmanager, Settings settings)
+	public ResourceHandler(PluginManager pluginmanager, Settings settings)
 	{
 		this.pluginmanager = pluginmanager;
 		this.settings = settings;
 	}
 
-	/**
-	 * This method handles the given route. In case of a match the method should return true and the router
-	 * will stop looking for the next dispatcher - otherwise return false and the router continues.
-	 */
 	@Override
-	public boolean dispatchRoute(Route route) throws Exception
+	public boolean isContextSupported(Context context)
 	{
-		String uripath = route.getRequest().getRequestURI().substring(route.getRequest().getContextPath().length());
+		String uripath = context.getRequest().getRequestURI().substring(context.getRequest().getContextPath().length());
+		if(uripath.startsWith(Globals.DIRECTORY_SEPARATOR + settings.getResourcePrefix()))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	@Override
+	public void dispatchContext(Context context) throws Exception
+	{
+		String uripath = context.getRequest().getRequestURI().substring(context.getRequest().getContextPath().length());
 		String filepath = StringUtil.trimFirstCharacters(uripath, Globals.DIRECTORY_SEPARATOR + settings.getResourcePrefix());
 		if(filepath.length() > 0 && !filepath.equals(Globals.DIRECTORY_SEPARATOR))
 		{
-			InputStream servletinputstream = route.getContext().getResourceAsStream(Globals.WEBAPP_WEBINF_DIRECTORY + filepath);
+			InputStream servletinputstream = context.getContext().getResourceAsStream(Globals.WEBAPP_WEBINF_DIRECTORY + filepath);
 			if(servletinputstream != null)
 			{
-				try
-				{
-					copyStream(servletinputstream, route.getResponse().getOutputStream());
-					return true;
-				}
-				catch(IOException exception)
-				{
-					return false;
-				}
+				copyStream(servletinputstream, context.getResponse().getOutputStream());
 			}
 			else
 			{
@@ -90,20 +80,11 @@ public class ResourceDispatcher implements Engine
 					InputStream plugininputstream = plugin.getClass().getResourceAsStream(filepath);
 					if(plugininputstream != null)
 					{
-						try
-						{
-							copyStream(plugininputstream, route.getResponse().getOutputStream());
-							return true;
-						}
-						catch(IOException exception)
-						{
-							return false;
-						}
+						copyStream(plugininputstream, context.getResponse().getOutputStream());
 					}
 				}
 			}
 		}
-		return false;
 	}
 
 	/**

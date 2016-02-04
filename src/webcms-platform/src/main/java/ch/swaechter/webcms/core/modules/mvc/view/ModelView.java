@@ -16,14 +16,14 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.mvc.view;
+package ch.swaechter.webcms.core.modules.mvc.view;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import ch.swaechter.webcms.core.Globals;
+import ch.swaechter.webcms.core.dispatcher.Context;
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.router.Route;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
@@ -97,10 +97,10 @@ public class ModelView implements View
 	}
 
 	/**
-	 * Process the view and write to the given stream.
+	 * Process the view based on the model and write to the response stream.
 	 */
 	@Override
-	public void processRoute(Plugin plugin, Route route) throws Exception
+	public void processContext(Plugin plugin, Context context) throws Exception
 	{
 		// Collect the layout commands
 		Map<String, TemplateDirectiveModel> layout = new HashMap<String, TemplateDirectiveModel>();
@@ -113,7 +113,7 @@ public class ModelView implements View
 		configuration.setSharedVariable("layout", layout);
 
 		// Load the base template
-		WebappTemplateLoader baseloader = new WebappTemplateLoader(route.getContext(), Globals.DIRECTORY_SEPARATOR + Globals.WEBAPP_WEBINF_DIRECTORY);
+		WebappTemplateLoader baseloader = new WebappTemplateLoader(context.getContext(), Globals.DIRECTORY_SEPARATOR + Globals.WEBAPP_WEBINF_DIRECTORY);
 
 		// Load the content template
 		ClassTemplateLoader contentloader = new ClassTemplateLoader(plugin.getClass(), Globals.DIRECTORY_SEPARATOR);
@@ -128,6 +128,6 @@ public class ModelView implements View
 		// Get the template and parse it
 		configuration.getTemplate(Globals.WEBAPP_FALLBACK_VIEW_FILE);
 		Template template = configuration.getTemplate(filepath + Globals.WEBAPP_VIEW_EXTENSION);
-		template.process(attributes, route.getResponse().getWriter());
+		template.process(attributes, context.getResponse().getWriter());
 	}
 }

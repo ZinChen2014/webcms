@@ -18,9 +18,9 @@
 
 package ch.swaechter.webcms.textplugin.controllers;
 
-import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.ModelView;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
+import ch.swaechter.webcms.core.modules.mvc.controller.Controller;
+import ch.swaechter.webcms.core.modules.mvc.view.ModelView;
+import ch.swaechter.webcms.core.modules.mvc.view.View;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 import ch.swaechter.webcms.textplugin.models.TextModel;

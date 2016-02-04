@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ch.swaechter.webcms.adminplugin.controllers.UserController;
-import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
+import ch.swaechter.webcms.core.modules.mvc.controller.Controller;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;

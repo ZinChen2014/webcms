@@ -16,10 +16,10 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.mvc.view;
+package ch.swaechter.webcms.core.modules.mvc.view;
 
+import ch.swaechter.webcms.core.dispatcher.Context;
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.router.Route;
 
 /**
  * This class is a placeholder view used for action that don't return data or redirect to another
@@ -33,7 +33,7 @@ public class EmptyView implements View
 	 * Process nothing because the current view is a placeholder view.
 	 */
 	@Override
-	public void processRoute(Plugin plugin, Route route) throws Exception
+	public void processContext(Plugin plugin, Context context) throws Exception
 	{
 		// Do nothing
 	}

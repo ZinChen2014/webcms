@@ -16,7 +16,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.mvc.controller;
+package ch.swaechter.webcms.core.modules.mvc.controller;
 
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;

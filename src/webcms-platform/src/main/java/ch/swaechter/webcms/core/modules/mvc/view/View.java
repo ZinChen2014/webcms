@@ -16,10 +16,10 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.mvc.view;
+package ch.swaechter.webcms.core.modules.mvc.view;
 
+import ch.swaechter.webcms.core.dispatcher.Context;
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.router.Route;
 
 /**
  * This interface represents a view that can be used in a controller to control the action output.
@@ -32,8 +32,8 @@ public interface View
 	 * Method that will be used by the system to process the view.
 	 *
 	 * @param plugin Plugin
-	 * @param route Route
+	 * @param context Context
 	 * @throws Exception Throws an exception in case an error occurs
 	 */
-	public void processRoute(Plugin plugin, Route route) throws Exception;
+	public void processContext(Plugin plugin, Context context) throws Exception;
 }

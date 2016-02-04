@@ -18,6 +18,7 @@
 
 package ch.swaechter.webcms.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -27,8 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import ch.swaechter.webcms.core.dispatcher.Dispatcher;
 import ch.swaechter.webcms.core.plugin.Plugin;
 import ch.swaechter.webcms.core.plugin.PluginManager;
-import ch.swaechter.webcms.core.router.Route;
-import ch.swaechter.webcms.core.router.Router;
 import ch.swaechter.webcms.core.settings.Settings;
 
 /**
@@ -38,29 +37,45 @@ import ch.swaechter.webcms.core.settings.Settings;
  */
 public class Platform
 {
+	/**
+	 * Plugin manager that is responsible for the plugins.
+	 */
 	private final PluginManager pluginmanager;
 
-	private final Router router;
-
+	/**
+	 * Dispatcher that is responsible for all requests and responses.
+	 */
 	private final Dispatcher dispatcher;
 
+	/**
+	 * Constructor with the plugins and the settings.
+	 *
+	 * @param plugins Plugins
+	 * @param settings Settings
+	 */
 	public Platform(ArrayList<Plugin> plugins, Settings settings)
 	{
 		pluginmanager = new PluginManager(plugins);
-		router = new Router();
 		dispatcher = new Dispatcher(pluginmanager, settings);
 	}
-	
-	public void handleRequest(ServletContext context, HttpServletRequest request, HttpServletResponse response)
+
+	/**
+	 * Handle a request and dispatch the correct context and handler.
+	 *
+	 * @param context Servlet context
+	 * @param request HTTP request
+	 * @param response HTTP response
+	 * @throws IOException Exception in case of an IO problem
+	 */
+	public void handleRequest(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		Route route = router.getRoute(context, request, response);
 		try
 		{
-			dispatcher.dispatchRoute(route);
+			dispatcher.dispatchContext(dispatcher.getContext(context, request, response));
 		}
 		catch(Exception exception)
 		{
-			dispatcher.dispatchFallbackRoute(route);
+			dispatcher.dispatchFallbackContext(dispatcher.getContext(context, request, response));
 		}
 	}
 }

@@ -16,17 +16,17 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-package ch.swaechter.webcms.core.dispatcher.mvc.view;
+package ch.swaechter.webcms.core.modules.mvc.view;
 
+import ch.swaechter.webcms.core.dispatcher.Context;
 import ch.swaechter.webcms.core.plugin.Plugin;
-import ch.swaechter.webcms.core.router.Route;
 
 /**
- * This class represents a view that can redirect to an external site.
+ * This class represents a view that can redirect to an internal site.
  *
  * @author Simon Wächter
  */
-public class ExternalRedirectView implements View
+public class InternalRedirectView implements View
 {
 	/**
 	 * Redirect URL of the view.
@@ -34,21 +34,21 @@ public class ExternalRedirectView implements View
 	private final String redirecturl;
 
 	/**
-	 * Constructor with the redirect URL.
+	 * Constructor with a redirect URL.
 	 *
 	 * @param redirecturl Redirect URL.
 	 */
-	public ExternalRedirectView(String redirecturl)
+	public InternalRedirectView(String redirecturl)
 	{
 		this.redirecturl = redirecturl;
 	}
 
 	/**
-	 * Process the redirect based on the given stream.
+	 * Process the view and redirect to an internal URL.
 	 */
 	@Override
-	public void processRoute(Plugin plugin, Route route) throws Exception
+	public void processContext(Plugin plugin, Context context) throws Exception
 	{
-		route.getResponse().sendRedirect(redirecturl);
+		context.getResponse().sendRedirect(context.getRequest().getContextPath() + redirecturl);
 	}
 }

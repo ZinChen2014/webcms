@@ -19,12 +19,12 @@
 package ch.swaechter.webcms.adminplugin.controllers;
 
 import ch.swaechter.webcms.adminplugin.models.UserModel;
-import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.EmptyView;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.ExternalRedirectView;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.InternalRedirectView;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.ModelView;
-import ch.swaechter.webcms.core.dispatcher.mvc.view.View;
+import ch.swaechter.webcms.core.modules.mvc.controller.Controller;
+import ch.swaechter.webcms.core.modules.mvc.view.EmptyView;
+import ch.swaechter.webcms.core.modules.mvc.view.ExternalRedirectView;
+import ch.swaechter.webcms.core.modules.mvc.view.InternalRedirectView;
+import ch.swaechter.webcms.core.modules.mvc.view.ModelView;
+import ch.swaechter.webcms.core.modules.mvc.view.View;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 

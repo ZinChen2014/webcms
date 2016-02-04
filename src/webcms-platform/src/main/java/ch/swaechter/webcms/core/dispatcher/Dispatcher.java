@@ -1,61 +1,50 @@
-/**
- * WebCMS - A content management system (CMS) based on Java
- * Copyright (C) 2015 Simon Wächter (waechter.simon@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses/
- */
-
 package ch.swaechter.webcms.core.dispatcher;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import ch.swaechter.webcms.core.dispatcher.alias.AliasDispatcher;
-import ch.swaechter.webcms.core.dispatcher.mvc.MvcDispatcher;
-import ch.swaechter.webcms.core.dispatcher.resource.ResourceDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ch.swaechter.webcms.core.modules.mvc.MvcHandler;
+import ch.swaechter.webcms.core.modules.resource.ResourceHandler;
 import ch.swaechter.webcms.core.plugin.PluginManager;
-import ch.swaechter.webcms.core.router.Route;
 import ch.swaechter.webcms.core.settings.Settings;
 
-/**
- * This interface dispatches a route and calls the correct dispatcher engine.
- *
- * @author Simon Wächter
- */
 public class Dispatcher
 {
-	private ArrayList<Engine> engines;
+	private ArrayList<Handler> handlers = new ArrayList<>();
 
 	public Dispatcher(PluginManager pluginmanager, Settings settings)
 	{
-		engines = new ArrayList<>();
-		engines.add(new AliasDispatcher());
-		engines.add(new ResourceDispatcher(pluginmanager, settings));
-		engines.add(new MvcDispatcher(pluginmanager, settings));
+		handlers.add(new ResourceHandler(pluginmanager, settings));
+		handlers.add(new MvcHandler(pluginmanager, settings));
 	}
 	
-	public void dispatchRoute(Route route) throws Exception
+	public Context getContext(ServletContext context, HttpServletRequest request, HttpServletResponse response)
 	{
-		for(Engine engine : engines)
+		String path = request.getRequestURI().substring(request.getContextPath().length());
+		return new Context(path, context, request, response);
+	}
+
+	public void dispatchContext(Context context) throws Exception
+	{
+		for(Handler handler : handlers)
 		{
-			if(engine.dispatchRoute(route))
+			if(handler.isContextSupported(context))
 			{
+				handler.dispatchContext(context);
 				break;
 			}
 		}
 	}
-	
-	public void dispatchFallbackRoute(Route route)
+
+	public void dispatchFallbackContext(Context context) throws IOException
 	{
+		PrintWriter writer = context.getResponse().getWriter();
+		writer.println("An internal error occured!");
+		writer.close();
 	}
 }

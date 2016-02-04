@@ -20,7 +20,7 @@ package ch.swaechter.webcms.core.plugin;
 
 import java.util.ArrayList;
 
-import ch.swaechter.webcms.core.dispatcher.mvc.controller.Controller;
+import ch.swaechter.webcms.core.modules.mvc.controller.Controller;
 import ch.swaechter.webcms.core.settings.Settings;
 
 /**

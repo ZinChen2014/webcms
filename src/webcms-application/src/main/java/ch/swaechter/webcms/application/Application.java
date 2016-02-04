@@ -40,7 +40,7 @@ public class Application extends Servlet
 	private final static long serialVersionUID = 1L;
 
 	/**
-	 * Constructor that passes the configuration to the servlet.
+	 * Constructor that passes the plugins and the configuration to the servlet.
 	 */
 	public Application()
 	{

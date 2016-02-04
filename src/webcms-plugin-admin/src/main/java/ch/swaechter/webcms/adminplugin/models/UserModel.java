@@ -18,7 +18,7 @@
 
 package ch.swaechter.webcms.adminplugin.models;
 
-import ch.swaechter.webcms.core.dispatcher.mvc.model.Model;
+import ch.swaechter.webcms.core.modules.mvc.model.Model;
 import ch.swaechter.webcms.core.plugin.PluginManager;
 import ch.swaechter.webcms.core.settings.Settings;
 
